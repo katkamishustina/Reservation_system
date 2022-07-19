@@ -1,12 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+import os
 
 # BEST LEARNING WEBS:
 # https://likegeeks.com/python-gui-examples-tkinter-tutorial/
 # https://docs.python.org/3/library/tkinter.html#module-tkinter
 
-root = tk.Tk() # creating an empty window
+'''___________Set window parameters____________'''
 
+root = tk.Tk() # creating an empty window
 
 root.title('Reservation system') # title for window
 root.iconbitmap('icon.ico') # icon for window
@@ -21,8 +23,6 @@ centerY = int(screen_height/2) # center of the screen on y axis
 centerX = int(screen_width/2) # center of the screen on x axis
 
 root.geometry(f'{window_width}x{window_height}+{centerY}+{centerX}') # window size settings
-root.minsize(800,400)
-root.maxsize(800,400)
 
 '''___________Creating entire part of window____________'''
 
@@ -43,6 +43,9 @@ def go_to_help():
     Menu_frame.pack_forget()
     Settings_frame.forget()
 
+background_var = tk.IntVar()
+
+
 
 '''...........creating Menu frame.............'''
 
@@ -50,14 +53,10 @@ Menu_frame = ttk.Frame(root)
 Menu_frame.pack()
 
 background_1 = tk.PhotoImage(file = 'pozadi2.png')
-
 canvas_1 = tk.Canvas(Menu_frame, width=790, height=390)
-
 canvas_1.pack(fill = "both", expand=True)
-
 canvas_1.create_image(0, 0, image=background_1, anchor='nw')
 
-#background_2 = ...
 
 button_Res_sys = ttk.Button(Menu_frame, text='Reservace', width=30)
 cavas_button_R = canvas_1.create_window(200,100,window=button_Res_sys)
@@ -70,6 +69,7 @@ button_help = ttk.Button(Menu_frame, text='Napověda',width=30,command=go_to_hel
 cavas_button_h = canvas_1.create_window(200,170,window=button_help)
 
 cavas_text = canvas_1.create_text(200,370,text='@ Created by Ekaterina Mishustina')
+
 
 '''...........creating Settings frame.............'''
 
@@ -86,11 +86,63 @@ canvas_2.create_image(0, 0, image=background_2, anchor='nw')
 
 
 button_back = ttk.Button(Settings_frame, text='Zpět', width=30, command=back_to_menu)
-cavas_button_b = canvas_2.create_window(200,100,window=button_back)
+cavas_button_b = canvas_2.create_window(200, 100, window=button_back)
 
+Rad_button_0 = ttk.Radiobutton(Settings_frame, text='Pozadí "Restaurace"', variable=background_var, value=0)
+Rad_button_1 = ttk.Radiobutton(Settings_frame, text='Pozadí "Kreslené"',variable=background_var, value=1)
+Rad_button_2 = ttk.Radiobutton(Settings_frame, text='Pozadí "Standard"',variable=background_var, value=2)
 
-button_theme = ttk.Button(Settings_frame, text='Pozadí',width=30)
-cavas_button_s = canvas_2.create_window(200,135,window=button_theme )
+r0_canv = canvas_2.create_window(500,100, window=Rad_button_0)
+r1_canv = canvas_2.create_window(500,130, window=Rad_button_1)
+r2_canv = canvas_2.create_window(500,160, window=Rad_button_2)
+
+def change_background():
+    if background_var.get() == 0:
+
+        background_2 = tk.PhotoImage(file = 'pozadi.png')
+        canvas_2.create_image(0, 0, image=background_2, anchor='nw')
+        canvas_2.pack(fill = "both", expand=True)
+        anvas_2.create_image(0, 0, image=background_2, anchor='nw')
+
+        background_1 = tk.PhotoImage(file = 'pozadi.png')
+        canvas_1 = tk.Canvas(Menu_frame, width=790, height=390)
+        canvas_1.pack(fill = "both", expand=True)
+        canvas_1.create_image(0, 0, image=background_1, anchor='nw')
+        
+        label_r1 = ttk.Label(Settings_frame, text=f'zvolil(a) jste 0')
+        r1_lab_canv = canvas_2.create_window(500,190, window=label_r1)
+        
+
+    elif background_var.get() == 1:
+
+        background_2 = tk.PhotoImage(file = 'pozadi4.png')
+        canvas_2.create_image(0, 0, image=background_2, anchor='nw')
+        canvas_2.pack(fill = "both", expand=True)
+        anvas_2.create_image(0, 0, image=background_2, anchor='nw')
+
+        label_r1 = ttk.Label(Settings_frame, text=f'zvolil(a) jste 1')
+        r1_lab_canv = canvas_2.create_window(500,190, window=label_r1)
+    else:
+        background_2 = tk.PhotoImage(file = 'pozadi2.png')
+        canvas_2.create_image(0, 0, image=background_2, anchor='nw')
+        canvas_2.pack(fill = "both", expand=True)
+        canvas_2.create_image(0, 0, image=background_2, anchor='nw')
+
+        label_r1 = ttk.Label(Settings_frame, text=f'zvolil(a) jste 2')
+        r1_lab_canv = canvas_2.create_window(500,190, window=label_r1)
+
+var11 = tk.IntVar()
+frame11 = tk.LabelFrame(Settings_frame, text='Choose wisely')
+frame11.pack(pady=10)
+
+tk.Radiobutton(frame11, text='Army', variable=var11, value=1).grid(row=0, column=1)
+tk.Radiobutton(frame11, text="Airforce", variable=var11, value=2).grid(row=0, column=2)
+tk.Radiobutton(frame11, text="Navy", variable=var11, value=3).grid(row=1, columnspan=3)
+
+rr_canv = canvas_2.create_window(500,300, window=frame11)
+
+button_1 = tk.Button(Settings_frame,text='Ok', command=change_background)
+cavas_button_1 = canvas_2.create_window(500,220,window=button_1)
 
 button_map = ttk.Button(Settings_frame, text='Vytvořit mapu stolů', width=30)
 cavas_button_h = canvas_2.create_window(200,170,window=button_map)
@@ -115,10 +167,18 @@ button_back = ttk.Button(Help_frame, text='Zpět', width=30, command=back_to_men
 cavas_button_b2 = canvas_3.create_window(200,100,window=button_back)
 
 
-text_help_fill = 'Blalala'
-text_help = canvas_3.create_text(250,170,text='Vytvoření mapy stolů', fill='white')
+text_for_Help = tk.Text(Help_frame, width=50, height=20)
+text_for_Help.insert('1.0', '   PRVNÍ KROKY\nNejprve nastavte mapu stolů v části "Nastavení".\nDale pokračujte nastavením data a času.')
+
+text_for_Help['state'] = 'disabled'
+canvas_for_help_label = canvas_3.create_window(550, 200, window=text_for_Help)
+
+# scrollbar = ttk.Scrollbar(text_for_Help, orient='vertical', command=text_for_Help.yview)
+# scrollbar.pack(side='right')
+# text_for_Help['yscrollcommand'] = scrollbar.set
+
+
 createdBy_text = canvas_3.create_text(200,370,text='@ Created by Ekaterina Mishustina')
 
 root.mainloop() # window opening
-
 
